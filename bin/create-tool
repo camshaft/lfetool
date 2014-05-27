@@ -63,7 +63,7 @@ fill_tool_var () {
         '{if (index($2, pat) > 0) {
              printf("%s=\"", $1);
              if (OS == "Darwin") {
-                 "base64 -b 0 < " tmpl | getline b64;
+                 "openssl base64 -e -A < " tmpl | getline b64;
              } else {
                  "base64 -w 0 < " tmpl | getline b64;
              }
@@ -104,7 +104,7 @@ compress_tool () {
 
     printf "lfetool="   >> $temp
     if [ $OS_TYPE = Darwin ]; then
-        gzip --best --stdout $dest | base64 -b 0 >> $temp
+        gzip --best --stdout $dest | openssl base64 -e -A >> $temp
     else
         gzip --best --stdout $dest | base64 -w 0 >> $temp
     fi
@@ -118,10 +118,10 @@ decode () {
     os=\`uname\`
     case \$os in
         Darwin)
-            base64 -D
+            openssl base64 -d -A
             ;;
         *)
-            base64 -d
+            base64 -D
             ;;
     esac
 }

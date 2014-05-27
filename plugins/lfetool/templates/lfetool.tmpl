@@ -164,13 +164,13 @@ echoe () {
 decode () {
     case $OS_TYPE in
         Darwin)
-            base64 -D
+            openssl base64 -d -A
             ;;
         LINUX|Cygwin)
-            base64 -d
+            base64 -D
             ;;
         *)
-            base64 -d
+            base64 -D
             ;;
     esac
 }
